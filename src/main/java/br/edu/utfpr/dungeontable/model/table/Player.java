@@ -1,14 +1,30 @@
 package br.edu.utfpr.dungeontable.model.table;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "DT_PLAYER")
 public class Player {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(name = "NAME_PLAYER")
     private String namePlayer;
+    @Column(name = "NAME_CHARACTER")
     private String nameCharacter;
+    @Column(name = "DESCRIPTION_CHARACTER")
     private String descriptionCharacter;
+    @Column(name = "CLASS_CHARACTER")
     private String classCharacter;
+    @Column(name = "BACKGROUND")
     private String background;
+    @Column(name = "ANTECEDENT")
     private String antecedent;
+    @Column(name = "RACE_CHARACTER")
     private String raceCharacter;
+    @Column(name = "AGE")
     private Integer age;
 
 

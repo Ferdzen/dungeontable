@@ -1,14 +1,37 @@
 package br.edu.utfpr.dungeontable.model.tools;
 
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "DT_MAGIC")
 public class Magic {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "SCHOOL_MAGIC")
     private String schoolMagic;
+
+    @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "LEVEL")
     private String level;
+
+    @Column(name = "COMPONENTS")
     private String components;
+
+    @Column(name = "CASTING_TIME")
     private String castingTime;
+
+    @Column(name = "RANGE")
     private String range;
+
+    @Column(name = "DURATION")
     private String duration;
 
     public Integer getId() {

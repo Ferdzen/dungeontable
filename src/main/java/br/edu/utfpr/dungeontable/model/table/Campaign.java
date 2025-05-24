@@ -1,9 +1,20 @@
 package br.edu.utfpr.dungeontable.model.table;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "DT_CAMPAIGN")
 public class Campaign {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "DESCRIPTION")
     private String description;
+    @Column(name = "PHONE")
     private String systemCampaign;
 
     public Integer getId() {

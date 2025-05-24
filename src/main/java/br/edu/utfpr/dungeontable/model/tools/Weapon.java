@@ -1,13 +1,35 @@
 package br.edu.utfpr.dungeontable.model.tools;
 
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "DT_WEAPON")
 public class Weapon {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "PRICE")
     private Double price;
+
+    @Column(name = "CATEGORY")
     private String category;
+
+    @Column(name = "DAMAGE")
     private String damage;
+
+    @Column(name = "WEIGHT")
     private Long weight;
+
+    @Column(name = "PROPERTY")
     private String property;
 
     public Integer getId() {
