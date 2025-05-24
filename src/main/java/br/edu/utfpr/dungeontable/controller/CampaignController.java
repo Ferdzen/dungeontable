@@ -1,43 +1,63 @@
 package br.edu.utfpr.dungeontable.controller;
 
 import br.edu.utfpr.dungeontable.model.table.Campaign;
+import br.edu.utfpr.dungeontable.model.vo.CampaignVO;
+import br.edu.utfpr.dungeontable.service.CampaignService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/campaign")
 public class CampaignController {
     public CampaignController() {}
 
-    private List<Campaign> campaigns = new ArrayList<>();
+    private CampaignService campaignService;
+
+    private ModelMapper modelMapper = new ModelMapper();
+
 
     @PostMapping
-    public ResponseEntity<Campaign> save(@RequestBody Campaign campaign) {
-        campaigns.add(campaign);
-        return new ResponseEntity<>(campaign, HttpStatus.CREATED);
+    public ResponseEntity<CampaignVO> save(@RequestBody CampaignVO campaignVO) {
+        Campaign campaign = modelMapper.map(campaignVO,  Campaign.class);
+        campaignService.save(campaign);
+        campaignVO.setId(campaign.getId());
+        return new ResponseEntity<>(campaignVO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Campaign update(@PathVariable("id") Long id, @RequestBody Campaign campaign) {
-        return campaign;
+    public ResponseEntity<CampaignVO> update(@PathVariable("id") Long id, @RequestBody CampaignVO campaignVO) {
+        Campaign campaign = modelMapper.map(campaignVO,  Campaign.class);
+        campaignService.save(campaign);
+        campaignVO.setId(campaign.getId());
+        campaignService.update(campaign);
+        return new ResponseEntity<>(campaignVO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Campaign findById(@PathVariable("id") Integer id) {
-        return campaigns.stream().filter(campaign -> campaign.getId().equals(id)).findFirst().orElse(null);
+    public CampaignVO findById(@PathVariable("id") Long id) {
+        return modelMapper.map(campaignService.findById(id), CampaignVO.class);
     }
 
     @GetMapping
-    public ResponseEntity<List<Campaign>> list() {
-        return new ResponseEntity<>(campaigns, HttpStatus.CREATED);
+    public ResponseEntity<List<CampaignVO>> findAll() {
+        List<Campaign> campaigns = campaignService.findAll();
+        List<CampaignVO> campaignVOs = campaigns.stream().map(campaign ->
+                modelMapper.map(campaign, CampaignVO.class)).collect(Collectors.toList());
+        return new ResponseEntity<>(campaignVOs, HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @param id
+     * */
     @DeleteMapping("/{id}")
-    public Campaign delete(@PathVariable("id") Integer id, @RequestBody Campaign campaign) {
-        return campaign;
+    public void delete(@PathVariable("id") Long id) {
+        campaignService.delete(id);
     }
 }
