@@ -1,7 +1,7 @@
 package br.edu.utfpr.dungeontable.model.vo;
 
 public class PlayerVO {
-    private Integer id;
+    private Long id;
     private String namePlayer;
     private String nameCharacter;
     private String descriptionCharacter;
@@ -12,11 +12,11 @@ public class PlayerVO {
     private Integer age;
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

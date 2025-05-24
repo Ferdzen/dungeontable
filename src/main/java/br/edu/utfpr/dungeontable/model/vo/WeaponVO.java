@@ -1,7 +1,7 @@
 package br.edu.utfpr.dungeontable.model.vo;
 
 public class WeaponVO {
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private Double price;
@@ -10,11 +10,11 @@ public class WeaponVO {
     private Long weight;
     private String property;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

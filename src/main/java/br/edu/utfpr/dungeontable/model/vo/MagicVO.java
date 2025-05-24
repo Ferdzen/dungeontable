@@ -1,7 +1,7 @@
 package br.edu.utfpr.dungeontable.model.vo;
 
 public class MagicVO {
-    private Integer id;
+    private Long id;
     private String name;
     private String schoolMagic;
     private String description;
@@ -11,11 +11,11 @@ public class MagicVO {
     private String range;
     private String duration;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
