@@ -8,7 +8,7 @@ public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(name = "NAME_PLAYER")
     private String namePlayer;

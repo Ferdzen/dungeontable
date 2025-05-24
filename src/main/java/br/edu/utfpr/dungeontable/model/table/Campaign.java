@@ -8,7 +8,7 @@ public class Campaign {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
 
     @Column(name = "NAME")
     private String name;
@@ -17,11 +17,11 @@ public class Campaign {
     @Column(name = "PHONE")
     private String systemCampaign;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
