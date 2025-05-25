@@ -4,19 +4,20 @@ import br.edu.utfpr.dungeontable.model.table.Campaign;
 import br.edu.utfpr.dungeontable.model.vo.CampaignVO;
 import br.edu.utfpr.dungeontable.service.CampaignService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/campaign")
 public class CampaignController {
     public CampaignController() {}
 
+    @Autowired
     private CampaignService campaignService;
 
     private ModelMapper modelMapper = new ModelMapper();
@@ -33,8 +34,7 @@ public class CampaignController {
     @PutMapping("/{id}")
     public ResponseEntity<CampaignVO> update(@PathVariable("id") Long id, @RequestBody CampaignVO campaignVO) {
         Campaign campaign = modelMapper.map(campaignVO,  Campaign.class);
-        campaignService.save(campaign);
-        campaignVO.setId(campaign.getId());
+        campaign.setId(id);
         campaignService.update(campaign);
         return new ResponseEntity<>(campaignVO, HttpStatus.OK);
     }
@@ -48,7 +48,7 @@ public class CampaignController {
     public ResponseEntity<List<CampaignVO>> findAll() {
         List<Campaign> campaigns = campaignService.findAll();
         List<CampaignVO> campaignVOs = campaigns.stream().map(campaign ->
-                modelMapper.map(campaign, CampaignVO.class)).collect(Collectors.toList());
+                modelMapper.map(campaign, CampaignVO.class)).toList();;
         return new ResponseEntity<>(campaignVOs, HttpStatus.CREATED);
     }
 
