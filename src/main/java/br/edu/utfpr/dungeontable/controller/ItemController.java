@@ -1,11 +1,14 @@
 package br.edu.utfpr.dungeontable.controller;
 
 import br.edu.utfpr.dungeontable.model.tools.Item;
+import br.edu.utfpr.dungeontable.model.vo.ItemVO;
+import br.edu.utfpr.dungeontable.service.ItemService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,32 +16,42 @@ import java.util.List;
 public class ItemController {
     public ItemController() {}
 
-    private List<Item> items = new ArrayList<>();
+    @Autowired
+    private ItemService itemService;
+    private ModelMapper modelMapper = new ModelMapper();
+
 
     @PostMapping
-    public ResponseEntity<Item> save(@RequestBody Item item) {
-        items.add(item);
-        return new ResponseEntity<>(item, HttpStatus.CREATED);
+    public ResponseEntity<ItemVO> save(@RequestBody ItemVO itemVO) {
+        Item item = modelMapper.map(itemVO, Item.class);
+        itemService.save(item);
+        itemVO.setId(item.getId());
+        return new ResponseEntity<>(itemVO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Item update(@PathVariable("id") Integer id, @RequestBody Item item)
+    public ResponseEntity<ItemVO> update(@PathVariable("id") Long id, @RequestBody ItemVO itemVO)
     {
-        return item;
+        Item item = modelMapper.map(itemVO, Item.class);
+        item.setId(id);
+        itemService.update(item);
+        return new ResponseEntity<>(itemVO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Item findById(@PathVariable("id") Integer id) {
-        return items.stream().filter(item -> item.getId().equals(id)).findFirst().orElse(null);
+    public ItemVO findById(@PathVariable("id") Long id) {
+        return modelMapper.map(itemService.findById(id), ItemVO.class);
     }
 
     @GetMapping
-    public ResponseEntity<List<Item>> list() {
-        return new ResponseEntity<>(items, HttpStatus.CREATED);
+    public ResponseEntity<List<ItemVO>> findAll() {
+        List<Item> items = itemService.findAll();
+        List<ItemVO> itemVOs = items.stream().map(item -> modelMapper.map(item, ItemVO.class)).toList();
+        return new ResponseEntity<>(itemVOs, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public Item delete(@PathVariable("id") Integer id, @RequestBody Item item) {
-        return item;
+    public void delete(@PathVariable("id") Long id) {
+        itemService.delete(id);
     }
 }
