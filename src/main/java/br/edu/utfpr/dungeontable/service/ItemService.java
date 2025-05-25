@@ -2,7 +2,6 @@ package br.edu.utfpr.dungeontable.service;
 
 import br.edu.utfpr.dungeontable.model.tools.Item;
 import br.edu.utfpr.dungeontable.repository.ItemRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -36,6 +35,6 @@ public class ItemService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
-        itemRepository.delete(id);
+        itemRepository.deleteById(id);
     }
 }
