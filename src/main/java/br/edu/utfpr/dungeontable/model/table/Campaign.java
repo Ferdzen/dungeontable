@@ -14,7 +14,7 @@ public class Campaign {
     private String name;
     @Column(name = "DESCRIPTION")
     private String description;
-    @Column(name = "PHONE")
+    @Column(name = "SYSTEM_CAMPAIGN")
     private String systemCampaign;
 
     public Long getId() {
