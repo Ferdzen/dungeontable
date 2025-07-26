@@ -1,8 +1,13 @@
 package br.edu.utfpr.dungeontable.controller;
 
+import br.edu.utfpr.dungeontable.exception.NotFoundException;
 import br.edu.utfpr.dungeontable.model.tools.Magic;
+import br.edu.utfpr.dungeontable.model.tools.Weapon;
 import br.edu.utfpr.dungeontable.model.vo.MagicVO;
 import br.edu.utfpr.dungeontable.service.MagicService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +44,16 @@ public class MagicController {
     }
 
     @GetMapping("/{id}")
-    public MagicVO findById(@PathVariable("id") Long id) {
+    @Operation(summary = "Get magic by ID", description = "Returns a single magic")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404",  description = "Not found - The magic was not found")
+    })
+    public MagicVO findById(@PathVariable("id") Long id) throws NotFoundException {
+        Magic magic = magicService.findById(id);
+        if(magic == null){
+            throw new NotFoundException();
+        }
         return modelMapper.map(magicService.findById(id), MagicVO.class);
     }
 

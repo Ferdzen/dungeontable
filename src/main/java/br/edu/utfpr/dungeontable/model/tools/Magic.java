@@ -10,28 +10,28 @@ public class Magic {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME") // REQUIRED
     private String name;
 
-    @Column(name = "SCHOOL_MAGIC")
+    @Column(name = "SCHOOL_MAGIC") // REQUIRED
     private String schoolMagic;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "LEVEL")
+    @Column(name = "LEVEL") // REQUIRED
     private String level;
 
-    @Column(name = "COMPONENTS")
+    @Column(name = "COMPONENTS") // REQUIRED
     private String components;
 
-    @Column(name = "CASTING_TIME")
+    @Column(name = "CASTING_TIME") // REQUIRED
     private String castingTime;
 
-    @Column(name = "RANGE")
+    @Column(name = "RANGE") // REQUIRED
     private String range;
 
-    @Column(name = "DURATION")
+    @Column(name = "DURATION") // REQUIRED
     private String duration;
 
     public Long getId() {

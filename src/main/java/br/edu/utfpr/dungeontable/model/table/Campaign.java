@@ -1,5 +1,6 @@
 package br.edu.utfpr.dungeontable.model.table;
 
+import br.edu.utfpr.dungeontable.model.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,12 +11,16 @@ public class Campaign {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME") // REQUIRED
     private String name;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "SYSTEM_CAMPAIGN")
     private String systemCampaign;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
 
     public Long getId() {
         return id;
@@ -47,5 +52,13 @@ public class Campaign {
 
     public void setSystemCampaign(String systemCampaign) {
         this.systemCampaign = systemCampaign;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

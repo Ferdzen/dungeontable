@@ -1,8 +1,13 @@
 package br.edu.utfpr.dungeontable.controller;
 
+import br.edu.utfpr.dungeontable.exception.NotFoundException;
+import br.edu.utfpr.dungeontable.model.table.Player;
 import br.edu.utfpr.dungeontable.model.tools.Weapon;
 import br.edu.utfpr.dungeontable.model.vo.WeaponVO;
 import br.edu.utfpr.dungeontable.service.WeaponService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +44,16 @@ public class WeaponController {
     }
 
     @GetMapping("/{id}")
-    public WeaponVO findById(@PathVariable("id") Long id) {
+    @Operation(summary = "Get weapon by ID", description = "Returns a single weapon")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404",  description = "Not found - The weapon was not found")
+    })
+    public WeaponVO findById(@PathVariable("id") Long id) throws NotFoundException {
+        Weapon weapon = weaponService.findById(id);
+        if(weapon == null){
+            throw new NotFoundException();
+        }
         return modelMapper.map(weaponService.findById(id), WeaponVO.class);
     }
 

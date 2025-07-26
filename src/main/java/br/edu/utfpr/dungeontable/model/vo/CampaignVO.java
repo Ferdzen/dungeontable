@@ -1,5 +1,6 @@
 package br.edu.utfpr.dungeontable.model.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
@@ -8,6 +9,8 @@ public class CampaignVO {
     private String name;
     private String description;
     private String systemCampaign;
+    @Schema(description = "ID do usuário dono da campanha")
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -39,5 +42,13 @@ public class CampaignVO {
 
     public void setSystemCampaign(String systemCampaign) {
         this.systemCampaign = systemCampaign;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

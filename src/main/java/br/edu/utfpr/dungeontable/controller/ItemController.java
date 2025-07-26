@@ -1,8 +1,13 @@
 package br.edu.utfpr.dungeontable.controller;
 
+import br.edu.utfpr.dungeontable.exception.NotFoundException;
 import br.edu.utfpr.dungeontable.model.tools.Item;
+import br.edu.utfpr.dungeontable.model.tools.Magic;
 import br.edu.utfpr.dungeontable.model.vo.ItemVO;
 import br.edu.utfpr.dungeontable.service.ItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +44,16 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ItemVO findById(@PathVariable("id") Long id) {
+    @Operation(summary = "Get item by ID", description = "Returns a single item")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404",  description = "Not found - The item was not found")
+    })
+    public ItemVO findById(@PathVariable("id") Long id) throws NotFoundException {
+        Item item = itemService.findById(id);
+        if(item == null){
+            throw new NotFoundException();
+        }
         return modelMapper.map(itemService.findById(id), ItemVO.class);
     }
 

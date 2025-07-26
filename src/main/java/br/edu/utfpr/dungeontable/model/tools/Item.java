@@ -1,5 +1,6 @@
 package br.edu.utfpr.dungeontable.model.tools;
 
+import br.edu.utfpr.dungeontable.model.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,16 +11,16 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME") // REQUIRED
     private String name;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "CATEGORY")
+    @Column(name = "CATEGORY") // REQUIRED
     private String category;
 
-    @Column(name = "PRICE")
+    @Column(name = "PRICE") // REQUIRED
     private Double price;
 
     public Long getId() {

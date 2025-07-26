@@ -1,5 +1,7 @@
 package br.edu.utfpr.dungeontable.model.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class PlayerVO {
     private Long id;
     private String namePlayer;
@@ -10,6 +12,8 @@ public class PlayerVO {
     private String antecedent;
     private String raceCharacter;
     private Integer age;
+    @Schema(description = "ID do usuário dono do personagem")
+    private Long userId;
 
 
     public Long getId() {
@@ -82,5 +86,13 @@ public class PlayerVO {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
