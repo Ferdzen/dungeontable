@@ -14,14 +14,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "USERNAME")
+    private String username;
 
     @Column(name = "EMAIL")
     private String email;
 
     @Column(name = "PHONE")
     private String phone;
+
+    @Column(name = "PASSWORD")
+    private String password;
 
     @ManyToMany
     @JoinTable(
@@ -44,12 +47,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -80,7 +83,23 @@ public class User {
         return campaigns;
     }
 
+    public void setCampaigns(List<Campaign> campaigns) {
+        this.campaigns = campaigns;
+    }
+
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

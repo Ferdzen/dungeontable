@@ -20,7 +20,7 @@ public class UserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public User save(User user){
-        if (user.getName() == null || user.getName().isEmpty()) {
+        if (user.getUsername() == null || user.getUsername().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name");
         } else if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "email");
@@ -38,7 +38,7 @@ public class UserService {
     public User update(User user) {
         if (user.getId() == null) {
             throw new BusinessException(ErrorCode.ID_REQUIRED);
-        } else if (user.getName() == null || user.getName().isEmpty()) {
+        } else if (user.getUsername() == null || user.getUsername().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name");
         } else if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "email");
