@@ -24,7 +24,8 @@ public class WeaponController {
 
     @Autowired
     private WeaponService weaponService;
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public ResponseEntity<WeaponVO> save(@RequestBody WeaponVO weaponVO) {

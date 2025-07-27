@@ -17,8 +17,6 @@ public class Player {
     private String nameCharacter;
     @Column(name = "DESCRIPTION_CHARACTER")
     private String descriptionCharacter;
-    @Column(name = "CLASS_CHARACTER") // REQUIRED
-    private String classCharacter;
     @Column(name = "BACKGROUND")
     private String background;
     @Column(name = "ANTECEDENT") // REQUIRED
@@ -29,8 +27,16 @@ public class Player {
     private Integer age;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "CLASSPLAYER_ID") // REQUIRED
+    private ClassPlayer classPlayer;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID") // REQUIRED
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "CAMPAIGN_ID")
+    private Campaign campaign;
 
 
     public Long getId() {
@@ -63,14 +69,6 @@ public class Player {
 
     public void setDescriptionCharacter(String descriptionCharacter) {
         this.descriptionCharacter = descriptionCharacter;
-    }
-
-    public String getClassCharacter() {
-        return classCharacter;
-    }
-
-    public void setClassCharacter(String classCharacter) {
-        this.classCharacter = classCharacter;
     }
 
     public String getBackground() {
@@ -111,5 +109,21 @@ public class Player {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
+    }
+
+    public ClassPlayer getClassPlayer() {
+        return classPlayer;
+    }
+
+    public void setClassPlayer(ClassPlayer classPlayer) {
+        this.classPlayer = classPlayer;
     }
 }

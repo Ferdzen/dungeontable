@@ -23,14 +23,16 @@ public class PlayerService {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name player");
         }else if (player.getNameCharacter() == null || player.getNameCharacter().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name character");
-        } else if (player.getClassCharacter() == null || player.getClassCharacter().isEmpty()) {
-            throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "class character");
         } else if (player.getAntecedent() == null || player.getAntecedent().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "antecedent");
         } else if (player.getRaceCharacter() == null || player.getRaceCharacter().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "race character");
         } else if (player.getAge() == null) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "age");
+        } else if (player.getUser() == null) {
+            throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "user");
+        } else if (player.getClassPlayer() == null) {
+            throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "Class Player");
         }
         return playerRepository.save(player);
     }
@@ -44,14 +46,16 @@ public class PlayerService {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name player");
         }else if (player.getNameCharacter() == null || player.getNameCharacter().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name character");
-        } else if (player.getClassCharacter() == null || player.getClassCharacter().isEmpty()) {
-            throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "class character");
         } else if (player.getAntecedent() == null || player.getAntecedent().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "antecedent");
         } else if (player.getRaceCharacter() == null || player.getRaceCharacter().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "race character");
         } else if (player.getAge() == null) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "age");
+        } else if (player.getUser() == null) {
+            throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "user");
+        } else if (player.getClassPlayer() == null) {
+            throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "Class Player");
         }
         return playerRepository.save(player);
     }

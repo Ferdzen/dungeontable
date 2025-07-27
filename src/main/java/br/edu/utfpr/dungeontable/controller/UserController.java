@@ -28,7 +28,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public ResponseEntity<UserVO> save(@RequestBody UserVO userVO){

@@ -23,7 +23,8 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @PostMapping

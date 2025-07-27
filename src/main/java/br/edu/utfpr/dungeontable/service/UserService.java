@@ -26,6 +26,11 @@ public class UserService {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "email");
         }
 
+        boolean existsEmail = userRepository.findByEmailIgnoreCase(user.getEmail()).isPresent();
+        if(existsEmail){
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
+        }
+
         return userRepository.save(user);
     }
 

@@ -26,18 +26,12 @@ public class PlayerController {
 
     @Autowired
     private PlayerService playerService;
-    //private UserService userService;
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public ResponseEntity<PlayerVO> save(@RequestBody PlayerVO playerVO) {
         Player player = modelMapper.map(playerVO, Player.class);
-
-//        if (playerVO.getUserId() != null) {
-//            User user = userService.findById(playerVO.getUserId()); // ou repository
-//            player.setUser(user);
-//        }
-
         playerService.save(player);
         playerVO.setId(player.getId());
         return new ResponseEntity<>(playerVO, HttpStatus.CREATED);

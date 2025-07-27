@@ -7,13 +7,17 @@ public class PlayerVO {
     private String namePlayer;
     private String nameCharacter;
     private String descriptionCharacter;
-    private String classCharacter;
     private String background;
     private String antecedent;
     private String raceCharacter;
     private Integer age;
     @Schema(description = "ID do usuário dono do personagem")
     private Long userId;
+    @Schema(description = "ID da campanha que o personagem participa")
+    private Long campaignId;
+
+    @Schema(description = "ID da classe do personagem")
+    private Long classPlayerId;
 
 
     public Long getId() {
@@ -46,14 +50,6 @@ public class PlayerVO {
 
     public void setDescriptionCharacter(String descriptionCharacter) {
         this.descriptionCharacter = descriptionCharacter;
-    }
-
-    public String getClassCharacter() {
-        return classCharacter;
-    }
-
-    public void setClassCharacter(String classCharacter) {
-        this.classCharacter = classCharacter;
     }
 
     public String getBackground() {
@@ -94,5 +90,21 @@ public class PlayerVO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Long campaignId) {
+        this.campaignId = campaignId;
+    }
+
+    public Long getClassPlayerId() {
+        return classPlayerId;
+    }
+
+    public void setClassPlayerId(Long classPlayerId) {
+        this.classPlayerId = classPlayerId;
     }
 }

@@ -25,7 +25,8 @@ public class MagicController {
     @Autowired
     private MagicService magicService;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping
     public ResponseEntity<MagicVO> save(@RequestBody MagicVO magicVO) {

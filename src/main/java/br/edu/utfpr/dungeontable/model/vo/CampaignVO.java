@@ -3,14 +3,19 @@ package br.edu.utfpr.dungeontable.model.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class CampaignVO {
     private Long id;
     private String name;
     private String description;
-    private String systemCampaign;
+    @Schema(description = "ID do sistema utilizado na campanha")
+    private Long systemCampaignId;
     @Schema(description = "ID do usuário dono da campanha")
     private Long userId;
+    @Schema(description = "Lista de players que participam da campanha")
+    private List<PlayerVO> players;
 
     public Long getId() {
         return id;
@@ -36,12 +41,12 @@ public class CampaignVO {
         this.description = description;
     }
 
-    public String getSystemCampaign() {
-        return systemCampaign;
+    public Long getSystemCampaignId() {
+        return systemCampaignId;
     }
 
-    public void setSystemCampaign(String systemCampaign) {
-        this.systemCampaign = systemCampaign;
+    public void setSystemCampaignId(Long systemCampaignId) {
+        this.systemCampaignId = systemCampaignId;
     }
 
     public Long getUserId() {
@@ -50,5 +55,13 @@ public class CampaignVO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public List<PlayerVO> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<PlayerVO> players) {
+        this.players = players;
     }
 }

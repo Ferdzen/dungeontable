@@ -5,6 +5,7 @@ import br.edu.utfpr.dungeontable.model.User;
 import br.edu.utfpr.dungeontable.model.table.Campaign;
 import br.edu.utfpr.dungeontable.model.tools.Item;
 import br.edu.utfpr.dungeontable.model.vo.CampaignVO;
+import br.edu.utfpr.dungeontable.model.vo.PlayerVO;
 import br.edu.utfpr.dungeontable.service.CampaignService;
 import br.edu.utfpr.dungeontable.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,8 @@ public class CampaignController {
     private CampaignService campaignService;
     //private UserService userService;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @PostMapping
@@ -63,15 +65,30 @@ public class CampaignController {
         if(campaign == null){
             throw new NotFoundException();
         }
-        return modelMapper.map(campaignService.findById(id), CampaignVO.class);
+        CampaignVO campaignVO = modelMapper.map(campaign, CampaignVO.class);
+
+        List<PlayerVO> players = campaign.getPlayers().stream()
+                .map(player -> modelMapper.map(player, PlayerVO.class))
+                .toList();
+
+        campaignVO.setPlayers(players);
+        return campaignVO;
     }
 
     @GetMapping
     public ResponseEntity<List<CampaignVO>> findAll() {
         List<Campaign> campaigns = campaignService.findAll();
-        List<CampaignVO> campaignVOs = campaigns.stream().map(campaign ->
-                modelMapper.map(campaign, CampaignVO.class)).toList();;
-        return new ResponseEntity<>(campaignVOs, HttpStatus.CREATED);
+
+        List<CampaignVO> campaignVOs = campaigns.stream().map(campaign -> {
+            CampaignVO vo = modelMapper.map(campaign, CampaignVO.class);
+            List<PlayerVO> players = campaign.getPlayers().stream()
+                    .map(player -> modelMapper.map(player, PlayerVO.class))
+                    .toList();
+            vo.setPlayers(players);
+            return vo;
+        }).toList();
+
+        return new ResponseEntity<>(campaignVOs, HttpStatus.OK);
     }
 
     /**

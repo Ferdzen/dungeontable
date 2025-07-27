@@ -4,10 +4,11 @@ public enum ErrorCode {
 
     // DEFAULT MESSAGES
     ID_REQUIRED("ID_REQUIRED", "O ID precisa ser preenchido."),
-    EMAIL_ALREADY_EXISTS("EMAIL_ALREADY_EXISTS", "Este e-mail já está em uso."),
+    EMAIL_ALREADY_EXISTS("EMAIL_ALREADY_EXISTS", "Este e-mail já está cadastrado."),
     INVALID_PASSWORD("INVALID_PASSWORD", "A senha informada é inválida."),
-    OPERATION_NOT_ALLOWED("OPERATION_NOT_ALLOWED", "Operação não permitida."),
-    ATTRIBUTE_REQUIRED("ATTRIBUTE_REQUIRED", "Campo obrigatório não preenchido: %s");
+    ATTRIBUTE_REQUIRED("ATTRIBUTE_REQUIRED", "Campo obrigatório não preenchido: %s"),
+    FORBIDDEN_ACTION("FORBIDDEN_ACTION", "Esta ação não pode ser realizada: %s"),
+    NOT_FOUND("NOT_FOUND", "Campo solicitado não encontrado: %s");
 
     private final String code;
     private final String messageTemplate;
