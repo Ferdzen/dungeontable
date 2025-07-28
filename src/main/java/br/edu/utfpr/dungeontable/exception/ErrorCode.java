@@ -3,7 +3,7 @@ package br.edu.utfpr.dungeontable.exception;
 public enum ErrorCode {
 
     // DEFAULT MESSAGES
-    ID_REQUIRED("ID_REQUIRED", "O ID precisa ser preenchido."),
+    ID_REQUIRED("ID_REQUIRED", "O preenchimento do ID é obrigatório."),
     EMAIL_ALREADY_EXISTS("EMAIL_ALREADY_EXISTS", "Este e-mail já está cadastrado."),
     INVALID_PASSWORD("INVALID_PASSWORD", "A senha informada é inválida."),
     ATTRIBUTE_REQUIRED("ATTRIBUTE_REQUIRED", "Campo obrigatório não preenchido: %s"),
