@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,6 +28,7 @@ public class WeaponController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<WeaponVO> save(@RequestBody WeaponVO weaponVO) {
         Weapon weapon = modelMapper.map(weaponVO, Weapon.class);
@@ -35,6 +37,7 @@ public class WeaponController {
         return new ResponseEntity<>(weaponVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<WeaponVO> update(@PathVariable("id") Long id, @RequestBody WeaponVO weaponVO)
     {
@@ -44,6 +47,7 @@ public class WeaponController {
         return new ResponseEntity<>(weaponVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get weapon by ID", description = "Returns a single weapon")
     @ApiResponses(value = {
@@ -58,6 +62,7 @@ public class WeaponController {
         return modelMapper.map(weaponService.findById(id), WeaponVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<WeaponVO>> findAll() {
         List<Weapon> weapons = weaponService.findAll();
@@ -66,6 +71,7 @@ public class WeaponController {
         return new ResponseEntity<>(weaponVOS, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         weaponService.delete(id);

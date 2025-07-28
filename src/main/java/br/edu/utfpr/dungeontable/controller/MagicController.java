@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,6 +29,7 @@ public class MagicController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<MagicVO> save(@RequestBody MagicVO magicVO) {
         Magic magic = modelMapper.map(magicVO, Magic.class);
@@ -36,6 +38,7 @@ public class MagicController {
         return new ResponseEntity<>(magicVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<MagicVO> update(@PathVariable("id") Long id, @RequestBody MagicVO magicVO) {
         Magic magic = modelMapper.map(magicVO, Magic.class);
@@ -44,6 +47,7 @@ public class MagicController {
         return new ResponseEntity<>(magicVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get magic by ID", description = "Returns a single magic")
     @ApiResponses(value = {
@@ -58,6 +62,7 @@ public class MagicController {
         return modelMapper.map(magicService.findById(id), MagicVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<MagicVO>> findAll() {
         List<Magic> magics = magicService.findAll();
@@ -66,6 +71,7 @@ public class MagicController {
         return new ResponseEntity<>(magicVOs, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         magicService.delete(id);

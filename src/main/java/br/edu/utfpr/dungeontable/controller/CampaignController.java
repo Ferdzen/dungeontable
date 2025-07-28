@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,20 +33,17 @@ public class CampaignController {
     @Autowired
     private ModelMapper modelMapper;
 
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<CampaignVO> save(@RequestBody CampaignVO campaignVO) {
         Campaign campaign = modelMapper.map(campaignVO,  Campaign.class);
-//        if (campaignVO.getUserId() != null) {
-//            User user = userService.findById(campaignVO.getUserId()); // ou repository
-//            campaign.setUser(user);
-//        }
 
         campaignService.save(campaign);
         campaignVO.setId(campaign.getId());
         return new ResponseEntity<>(campaignVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<CampaignVO> update(@PathVariable("id") Long id, @RequestBody CampaignVO campaignVO) {
         Campaign campaign = modelMapper.map(campaignVO,  Campaign.class);
@@ -54,6 +52,7 @@ public class CampaignController {
         return new ResponseEntity<>(campaignVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get campaign by ID", description = "Returns a single campaign")
     @ApiResponses(value = {
@@ -75,6 +74,7 @@ public class CampaignController {
         return campaignVO;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<CampaignVO>> findAll() {
         List<Campaign> campaigns = campaignService.findAll();
@@ -95,6 +95,7 @@ public class CampaignController {
      *
      * @param id
      * */
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         campaignService.delete(id);

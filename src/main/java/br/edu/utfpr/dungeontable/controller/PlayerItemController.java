@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class PlayerItemController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<PlayerItemVO> create(@RequestBody PlayerItemVO vo) {
         PlayerItem saved = playerItemService.save(vo);
         return new ResponseEntity<>(modelMapper.map(saved, PlayerItemVO.class), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public List<PlayerItemVO> findAll() {
         return playerItemService.findAll().stream()
@@ -35,6 +38,7 @@ public class PlayerItemController {
                 .toList();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/player/{playerId}")
     public List<PlayerItemVO> findByPlayer(@PathVariable Long playerId) {
         return playerItemService.findByPlayer(playerId).stream()
@@ -42,6 +46,7 @@ public class PlayerItemController {
                 .toList();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/player/{playerId}/campaign/{campaignId}")
     public List<PlayerItemVO> findByPlayerAndCampaign(@PathVariable Long playerId, @PathVariable Long campaignId) {
         return playerItemService.findByPlayerAndCampaign(playerId, campaignId).stream()
@@ -49,12 +54,14 @@ public class PlayerItemController {
                 .toList();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         playerItemService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PatchMapping("/quantity")
     public ResponseEntity<PlayerItemVO> updateQuantity(@RequestBody UpdatePlayerItemQuantityVO vo) {
         PlayerItem updated = playerItemService.updateQuantity(

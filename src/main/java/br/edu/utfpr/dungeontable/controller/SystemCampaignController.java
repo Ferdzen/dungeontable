@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class SystemCampaignController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get system campaign by ID", description = "Returns a single system campaign")
     @ApiResponses(value = {
@@ -44,6 +46,7 @@ public class SystemCampaignController {
         return  modelMapper.map(systemCampaignService.findById(id), SystemCampaignVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<SystemCampaignVO>> findAll(){
         List<SystemCampaign> systems = systemCampaignService.findAll();

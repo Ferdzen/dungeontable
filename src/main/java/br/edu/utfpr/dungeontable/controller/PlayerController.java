@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class PlayerController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<PlayerVO> save(@RequestBody PlayerVO playerVO) {
         Player player = modelMapper.map(playerVO, Player.class);
@@ -37,6 +39,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<PlayerVO> update(@PathVariable("id") Long id, @RequestBody PlayerVO playerVO) {
         Player player = modelMapper.map(playerVO, Player.class);
@@ -45,6 +48,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get player by ID", description = "Returns a single player")
     @ApiResponses(value = {
@@ -60,6 +64,7 @@ public class PlayerController {
         return modelMapper.map(playerService.findById(id), PlayerVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<PlayerVO>> findAll() {
         List<Player> players = playerService.findAll();
@@ -68,6 +73,7 @@ public class PlayerController {
         return new ResponseEntity<>(playerVOs, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         playerService.delete(id);

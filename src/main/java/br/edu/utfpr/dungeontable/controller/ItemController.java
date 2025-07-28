@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class ItemController {
     @Autowired
     private ModelMapper modelMapper;
 
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<ItemVO> save(@RequestBody ItemVO itemVO) {
         Item item = modelMapper.map(itemVO, Item.class);
@@ -35,6 +36,7 @@ public class ItemController {
         return new ResponseEntity<>(itemVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<ItemVO> update(@PathVariable("id") Long id, @RequestBody ItemVO itemVO)
     {
@@ -44,6 +46,7 @@ public class ItemController {
         return new ResponseEntity<>(itemVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get item by ID", description = "Returns a single item")
     @ApiResponses(value = {
@@ -58,6 +61,7 @@ public class ItemController {
         return modelMapper.map(itemService.findById(id), ItemVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<ItemVO>> findAll() {
         List<Item> items = itemService.findAll();
@@ -65,6 +69,7 @@ public class ItemController {
         return new ResponseEntity<>(itemVOs, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         itemService.delete(id);
