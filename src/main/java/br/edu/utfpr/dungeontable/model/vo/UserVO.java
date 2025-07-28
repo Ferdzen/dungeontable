@@ -4,9 +4,10 @@ import java.util.List;
 
 public class UserVO {
     private Long id;
-    private String name;
+    private String username;
     private String email;
     private String phone;
+    private String password;
 
     private List<CampaignVO> campaigns;
     private List<PlayerVO> players;
@@ -19,12 +20,12 @@ public class UserVO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -41,6 +42,14 @@ public class UserVO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<CampaignVO> getCampaigns() {

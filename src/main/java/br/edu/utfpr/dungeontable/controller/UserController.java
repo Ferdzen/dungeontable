@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<UserVO> save(@RequestBody UserVO userVO){
         User user = modelMapper.map(userVO, User.class);
@@ -40,6 +42,7 @@ public class UserController {
         return new ResponseEntity<>(userVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<UserVO> update(@PathVariable("id") Long id, @RequestBody UserVO userVO){
         User user = modelMapper.map(userVO, User.class);
@@ -48,6 +51,7 @@ public class UserController {
         return new ResponseEntity<>(userVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
     @Operation(summary = "Get user by ID", description = "Returns a single user")
     @ApiResponses(value = {
@@ -71,7 +75,7 @@ public class UserController {
         return new ResponseEntity<>(userVO, HttpStatus.OK);
     }
 
-    //@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserVO>> findAll() {
         List<User> users = userService.findAll();
@@ -85,6 +89,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         userService.delete(id);
