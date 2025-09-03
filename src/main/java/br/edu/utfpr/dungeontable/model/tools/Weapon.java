@@ -11,22 +11,22 @@ public class Weapon {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME") // REQUIRED
     private String name;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "PRICE")
+    @Column(name = "PRICE") // REQUIRED
     private Double price;
 
-    @Column(name = "CATEGORY")
+    @Column(name = "CATEGORY") // REQUIRED
     private String category;
 
-    @Column(name = "DAMAGE")
+    @Column(name = "DAMAGE") // REQUIRED
     private String damage;
 
-    @Column(name = "WEIGHT")
+    @Column(name = "WEIGHT") // REQUIRED
     private Long weight;
 
     @Column(name = "PROPERTY")

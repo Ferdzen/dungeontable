@@ -1,11 +1,20 @@
 package br.edu.utfpr.dungeontable.controller;
 
+import br.edu.utfpr.dungeontable.exception.NotFoundException;
 import br.edu.utfpr.dungeontable.model.tools.Item;
+import br.edu.utfpr.dungeontable.model.tools.Magic;
+import br.edu.utfpr.dungeontable.model.vo.ItemVO;
+import br.edu.utfpr.dungeontable.service.ItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -13,32 +22,56 @@ import java.util.List;
 public class ItemController {
     public ItemController() {}
 
-    private List<Item> items = new ArrayList<>();
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
-    public ResponseEntity<Item> save(@RequestBody Item item) {
-        items.add(item);
-        return new ResponseEntity<>(item, HttpStatus.CREATED);
+    public ResponseEntity<ItemVO> save(@RequestBody ItemVO itemVO) {
+        Item item = modelMapper.map(itemVO, Item.class);
+        itemService.save(item);
+        itemVO.setId(item.getId());
+        return new ResponseEntity<>(itemVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
-    public Item update(@PathVariable("id") Integer id, @RequestBody Item item)
+    public ResponseEntity<ItemVO> update(@PathVariable("id") Long id, @RequestBody ItemVO itemVO)
     {
-        return item;
+        Item item = modelMapper.map(itemVO, Item.class);
+        item.setId(id);
+        itemService.update(item);
+        return new ResponseEntity<>(itemVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
-    public Item findById(@PathVariable("id") Integer id) {
-        return items.stream().filter(item -> item.getId().equals(id)).findFirst().orElse(null);
+    @Operation(summary = "Get item by ID", description = "Returns a single item")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404",  description = "Not found - The item was not found")
+    })
+    public ItemVO findById(@PathVariable("id") Long id) throws NotFoundException {
+        Item item = itemService.findById(id);
+        if(item == null){
+            throw new NotFoundException();
+        }
+        return modelMapper.map(itemService.findById(id), ItemVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
-    public ResponseEntity<List<Item>> list() {
-        return new ResponseEntity<>(items, HttpStatus.CREATED);
+    public ResponseEntity<List<ItemVO>> findAll() {
+        List<Item> items = itemService.findAll();
+        List<ItemVO> itemVOs = items.stream().map(item -> modelMapper.map(item, ItemVO.class)).toList();
+        return new ResponseEntity<>(itemVOs, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
-    public Item delete(@PathVariable("id") Integer id, @RequestBody Item item) {
-        return item;
+    public void delete(@PathVariable("id") Long id) {
+        itemService.delete(id);
     }
 }

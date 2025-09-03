@@ -1,5 +1,6 @@
 package br.edu.utfpr.dungeontable.model.table;
 
+import br.edu.utfpr.dungeontable.model.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,22 +11,32 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "NAME_PLAYER")
+    @Column(name = "NAME_PLAYER") // REQUIRED
     private String namePlayer;
-    @Column(name = "NAME_CHARACTER")
+    @Column(name = "NAME_CHARACTER") // REQUIRED
     private String nameCharacter;
     @Column(name = "DESCRIPTION_CHARACTER")
     private String descriptionCharacter;
-    @Column(name = "CLASS_CHARACTER")
-    private String classCharacter;
     @Column(name = "BACKGROUND")
     private String background;
-    @Column(name = "ANTECEDENT")
+    @Column(name = "ANTECEDENT") // REQUIRED
     private String antecedent;
-    @Column(name = "RACE_CHARACTER")
+    @Column(name = "RACE_CHARACTER") // REQUIRED
     private String raceCharacter;
-    @Column(name = "AGE")
+    @Column(name = "AGE") // REQUIRED
     private Integer age;
+
+    @ManyToOne
+    @JoinColumn(name = "CLASSPLAYER_ID") // REQUIRED
+    private ClassPlayer classPlayer;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID") // REQUIRED
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "CAMPAIGN_ID")
+    private Campaign campaign;
 
 
     public Long getId() {
@@ -60,14 +71,6 @@ public class Player {
         this.descriptionCharacter = descriptionCharacter;
     }
 
-    public String getClassCharacter() {
-        return classCharacter;
-    }
-
-    public void setClassCharacter(String classCharacter) {
-        this.classCharacter = classCharacter;
-    }
-
     public String getBackground() {
         return background;
     }
@@ -98,5 +101,29 @@ public class Player {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
+    }
+
+    public ClassPlayer getClassPlayer() {
+        return classPlayer;
+    }
+
+    public void setClassPlayer(ClassPlayer classPlayer) {
+        this.classPlayer = classPlayer;
     }
 }

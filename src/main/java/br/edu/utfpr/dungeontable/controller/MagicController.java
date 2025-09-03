@@ -1,11 +1,21 @@
 package br.edu.utfpr.dungeontable.controller;
 
+import br.edu.utfpr.dungeontable.exception.NotFoundException;
 import br.edu.utfpr.dungeontable.model.tools.Magic;
+import br.edu.utfpr.dungeontable.model.tools.Weapon;
+import br.edu.utfpr.dungeontable.model.vo.MagicVO;
+import br.edu.utfpr.dungeontable.service.MagicService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @RestController
@@ -13,32 +23,58 @@ import java.util.List;
 public class MagicController {
     public MagicController() {}
 
-    private List<Magic> magics = new ArrayList<>();
+    @Autowired
+    private MagicService magicService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
-    public ResponseEntity<Magic> save(@RequestBody Magic magic) {
-        magics.add(magic);
-        return new ResponseEntity<>(magic, HttpStatus.CREATED);
+    public ResponseEntity<MagicVO> save(@RequestBody MagicVO magicVO) {
+        Magic magic = modelMapper.map(magicVO, Magic.class);
+        magicService.save(magic);
+        magicVO.setId(magic.getId());
+        return new ResponseEntity<>(magicVO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PutMapping("/{id}")
-    public Magic update(@PathVariable("id") Integer id, @RequestBody Magic magic) {
-        return magics.set(id, magic);
+    public ResponseEntity<MagicVO> update(@PathVariable("id") Long id, @RequestBody MagicVO magicVO) {
+        Magic magic = modelMapper.map(magicVO, Magic.class);
+        magic.setId(id);
+        magicService.update(magic);
+        return new ResponseEntity<>(magicVO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping("/{id}")
-    public Magic findById(@PathVariable("id") Integer id) {
-        return magics.stream().filter(magic -> magic.getId().equals(id)).findFirst().orElse(null);
+    @Operation(summary = "Get magic by ID", description = "Returns a single magic")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404",  description = "Not found - The magic was not found")
+    })
+    public MagicVO findById(@PathVariable("id") Long id) throws NotFoundException {
+        Magic magic = magicService.findById(id);
+        if(magic == null){
+            throw new NotFoundException();
+        }
+        return modelMapper.map(magicService.findById(id), MagicVO.class);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
-    public ResponseEntity<List<Magic>> list() {
-        return new ResponseEntity<>(magics, HttpStatus.CREATED);
+    public ResponseEntity<List<MagicVO>> findAll() {
+        List<Magic> magics = magicService.findAll();
+        List<MagicVO> magicVOs = magics.stream().map(magic -> modelMapper.map(magic, MagicVO.class))
+                .toList();
+        return new ResponseEntity<>(magicVOs, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")
-    public Magic delete(@PathVariable("id") Integer id,  @RequestBody Magic magic) {
-        return magic;
+    public void delete(@PathVariable("id") Long id) {
+        magicService.delete(id);
     }
 
 }
