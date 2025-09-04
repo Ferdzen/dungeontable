@@ -28,7 +28,7 @@ public class Magic {
     @Column(name = "CASTING_TIME") // REQUIRED
     private String castingTime;
 
-    @Column(name = "RANGE") // REQUIRED
+    @Column(name = "RANGE_MAGIC") // REQUIRED
     private String range;
 
     @Column(name = "DURATION") // REQUIRED
