@@ -73,4 +73,8 @@ public class Campaign {
     public void setSystemCampaign(SystemCampaign systemCampaign) {
         this.systemCampaign = systemCampaign;
     }
+
+    public SystemCampaign getSystemCampaign() {
+        return systemCampaign;
+    }
 }

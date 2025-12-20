@@ -16,7 +16,8 @@ public class Magic {
     @Column(name = "SCHOOL_MAGIC") // REQUIRED
     private String schoolMagic;
 
-    @Column(name = "DESCRIPTION")
+    @Lob
+    @Column(name = "DESCRIPTION", columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(name = "LEVEL") // REQUIRED
@@ -28,7 +29,7 @@ public class Magic {
     @Column(name = "CASTING_TIME") // REQUIRED
     private String castingTime;
 
-    @Column(name = "RANGE") // REQUIRED
+    @Column(name = "RANGE_MAGIC") // REQUIRED
     private String range;
 
     @Column(name = "DURATION") // REQUIRED

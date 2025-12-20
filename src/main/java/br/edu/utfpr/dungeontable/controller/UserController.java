@@ -32,7 +32,7 @@ public class UserController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @PostMapping
     public ResponseEntity<UserVO> save(@RequestBody UserVO userVO){
         User user = modelMapper.map(userVO, User.class);
@@ -75,7 +75,7 @@ public class UserController {
         return new ResponseEntity<>(userVO, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
     public ResponseEntity<List<UserVO>> findAll() {
         List<User> users = userService.findAll();

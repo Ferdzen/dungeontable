@@ -5,6 +5,7 @@ import br.edu.utfpr.dungeontable.exception.NotFoundException;
 import br.edu.utfpr.dungeontable.model.User;
 import br.edu.utfpr.dungeontable.model.table.Player;
 import br.edu.utfpr.dungeontable.model.vo.PlayerVO;
+import br.edu.utfpr.dungeontable.security.UserAuthentication;
 import br.edu.utfpr.dungeontable.service.PlayerService;
 import br.edu.utfpr.dungeontable.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,14 +66,44 @@ public class PlayerController {
         return modelMapper.map(playerService.findById(id), PlayerVO.class);
     }
 
+    @GetMapping("/list")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    @GetMapping
-    public ResponseEntity<List<PlayerVO>> findAll() {
-        List<Player> players = playerService.findAll();
-        List<PlayerVO> playerVOs = players.stream().map(player -> modelMapper.map(player, PlayerVO.class))
+    public ResponseEntity<List<PlayerVO>> findMyPlayers(Authentication authentication) {
+
+        UserAuthentication user =
+                (UserAuthentication) authentication.getPrincipal();
+
+        Long userId = user.getId();
+
+        List<Player> players = playerService.findByUserId(userId);
+
+        List<PlayerVO> vos = players.stream()
+                .map(p -> modelMapper.map(p, PlayerVO.class))
                 .toList();
-        return new ResponseEntity<>(playerVOs, HttpStatus.OK);
+
+        return ResponseEntity.ok(vos);
     }
+
+    @GetMapping("/campaign/{campaignId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<List<PlayerVO>> findByCampaign(
+            @PathVariable Long campaignId,
+            Authentication authentication
+    ) {
+        UserAuthentication auth =
+                (UserAuthentication) authentication.getPrincipal();
+
+        Long userId = auth.getId();
+
+        List<PlayerVO> players = playerService
+                .findByCampaignAndUser(campaignId, userId)
+                .stream()
+                .map(player -> modelMapper.map(player, PlayerVO.class))
+                .toList();
+
+        return ResponseEntity.ok(players);
+    }
+
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @DeleteMapping("/{id}")

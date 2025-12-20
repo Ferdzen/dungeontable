@@ -6,6 +6,7 @@ import br.edu.utfpr.dungeontable.model.table.Campaign;
 import br.edu.utfpr.dungeontable.model.tools.Item;
 import br.edu.utfpr.dungeontable.model.vo.CampaignVO;
 import br.edu.utfpr.dungeontable.model.vo.PlayerVO;
+import br.edu.utfpr.dungeontable.security.UserAuthentication;
 import br.edu.utfpr.dungeontable.service.CampaignService;
 import br.edu.utfpr.dungeontable.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -76,19 +78,31 @@ public class CampaignController {
 
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     @GetMapping
-    public ResponseEntity<List<CampaignVO>> findAll() {
-        List<Campaign> campaigns = campaignService.findAll();
+    public ResponseEntity<List<CampaignVO>> findMyCampaigns(Authentication authentication) {
+
+        UserAuthentication user =
+                (UserAuthentication) authentication.getPrincipal();
+
+        Long userId = user.getId();
+
+        List<Campaign> campaigns = campaignService.findByUserId(userId);
 
         List<CampaignVO> campaignVOs = campaigns.stream().map(campaign -> {
             CampaignVO vo = modelMapper.map(campaign, CampaignVO.class);
+
+            if (campaign.getSystemCampaign() != null) {
+                vo.setSystemCampaignId(campaign.getSystemCampaign().getId());
+            }
+
             List<PlayerVO> players = campaign.getPlayers().stream()
                     .map(player -> modelMapper.map(player, PlayerVO.class))
                     .toList();
+
             vo.setPlayers(players);
             return vo;
         }).toList();
 
-        return new ResponseEntity<>(campaignVOs, HttpStatus.OK);
+        return ResponseEntity.ok(campaignVOs);
     }
 
     /**

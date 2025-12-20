@@ -8,7 +8,8 @@ public enum ErrorCode {
     INVALID_PASSWORD("INVALID_PASSWORD", "A senha informada é inválida."),
     ATTRIBUTE_REQUIRED("ATTRIBUTE_REQUIRED", "Campo obrigatório não preenchido: %s"),
     FORBIDDEN_ACTION("FORBIDDEN_ACTION", "Esta ação não pode ser realizada: %s"),
-    NOT_FOUND("NOT_FOUND", "Campo solicitado não encontrado: %s");
+    NOT_FOUND("NOT_FOUND", "Campo solicitado não encontrado: %s"),
+    RESOURCE_NOT_FOUND("RESOURCE_NOT_FOUND", "Recurso solicitado não encontrado: %s");
 
     private final String code;
     private final String messageTemplate;

@@ -6,6 +6,7 @@ import br.edu.utfpr.dungeontable.model.User;
 import br.edu.utfpr.dungeontable.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public User save(User user){
@@ -30,7 +32,7 @@ public class UserService {
         if(existsEmail){
             throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
-
+        encodePasswordIfPresent(user);
         return userRepository.save(user);
     }
 
@@ -42,6 +44,18 @@ public class UserService {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "name");
         } else if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new BusinessException(ErrorCode.ATTRIBUTE_REQUIRED, "email");
+        }
+
+        User existing = userRepository.findById(user.getId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "user"));
+
+
+        existing.setUsername(user.getUsername());
+        existing.setEmail(user.getEmail());
+        existing.setPhone(user.getPhone());
+
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            existing.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(user);
     }
@@ -60,5 +74,11 @@ public class UserService {
             throw new BusinessException(ErrorCode.ID_REQUIRED);
         }
         userRepository.deleteById(id);
+    }
+
+    private void encodePasswordIfPresent(User user) {
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
     }
 }

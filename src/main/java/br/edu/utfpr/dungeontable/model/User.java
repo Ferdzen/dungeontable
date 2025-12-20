@@ -2,6 +2,7 @@ package br.edu.utfpr.dungeontable.model;
 
 import br.edu.utfpr.dungeontable.model.table.Campaign;
 import br.edu.utfpr.dungeontable.model.table.Player;
+import br.edu.utfpr.dungeontable.security.Role;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -38,6 +39,11 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Player> players = new ArrayList<>();
+
+    // 🔹 ROLE para segurança
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE", nullable = false)
+    private Role role = Role.USER;
 
     public Long getId() {
         return id;
@@ -101,5 +107,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

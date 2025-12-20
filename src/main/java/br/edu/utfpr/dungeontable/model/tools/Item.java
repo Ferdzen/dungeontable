@@ -14,7 +14,8 @@ public class Item {
     @Column(name = "NAME") // REQUIRED
     private String name;
 
-    @Column(name = "DESCRIPTION")
+    @Lob
+    @Column(name = "DESCRIPTION", columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(name = "CATEGORY") // REQUIRED
