@@ -17,7 +17,9 @@ public class Player {
     private String nameCharacter;
     @Column(name = "DESCRIPTION_CHARACTER")
     private String descriptionCharacter;
-    @Column(name = "BACKGROUND")
+
+    @Lob
+    @Column(name = "BACKGROUND", columnDefinition = "LONGTEXT")
     private String background;
     @Column(name = "ANTECEDENT") // REQUIRED
     private String antecedent;

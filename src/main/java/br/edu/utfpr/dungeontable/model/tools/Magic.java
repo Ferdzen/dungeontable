@@ -16,7 +16,8 @@ public class Magic {
     @Column(name = "SCHOOL_MAGIC") // REQUIRED
     private String schoolMagic;
 
-    @Column(name = "DESCRIPTION")
+    @Lob
+    @Column(name = "DESCRIPTION", columnDefinition = "LONGTEXT")
     private String description;
 
     @Column(name = "LEVEL") // REQUIRED
