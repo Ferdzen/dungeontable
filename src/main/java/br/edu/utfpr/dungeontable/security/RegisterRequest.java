@@ -1,17 +1,17 @@
 package br.edu.utfpr.dungeontable.security;
 
 public class RegisterRequest {
-    private String name;
+    private String username;
     private String email;
     private String phone;
     private String password;
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
