@@ -14,7 +14,15 @@ import java.util.List;
 @Service
 public class CampaignService {
     @Autowired
-    private CampaignRepository campaignRepository;
+    private final CampaignRepository campaignRepository;
+
+    public CampaignService(CampaignRepository campaignRepository) {
+        this.campaignRepository = campaignRepository;
+    }
+
+    public List<Campaign> findByUserId(Long userId) {
+        return campaignRepository.findByUserId(userId);
+    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Campaign save(Campaign campaign) {
