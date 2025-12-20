@@ -64,9 +64,14 @@ public class PlayerService {
         return playerRepository.findById(id).orElse(null);
     }
 
-    public List<Player> findAll() {
-        return playerRepository.findAll();
+    public List<Player> findByUserId(Long userId) {
+        return playerRepository.findByUserId(userId);
     }
+
+    public List<Player> findByCampaignAndUser(Long campaignId, Long userId) {
+        return playerRepository.findByCampaignIdAndUserId(campaignId, userId);
+    }
+
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
